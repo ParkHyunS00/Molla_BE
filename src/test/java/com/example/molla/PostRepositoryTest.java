@@ -1,5 +1,6 @@
 package com.example.molla;
 
+import com.example.molla.domain.Emotion;
 import com.example.molla.domain.Post;
 import com.example.molla.domain.User;
 import com.example.molla.repository.PostRepository;
@@ -50,17 +51,17 @@ public class PostRepositoryTest {
         Post post1 = new Post();
         post1.setTitle("first post");
         post1.setContent("first post");
-        post1.setPostEmotion("sad");
+        post1.setPostEmotion(Emotion.SAD);
         post1.setUser(user);
-        post1.setUserEmotion("sad");
+        post1.setUserEmotion(Emotion.SAD);
         postRepository.save(post1);
 
         Post post2 = new Post();
         post2.setTitle("second post");
         post2.setContent("second post");
-        post2.setPostEmotion("happy");
+        post2.setPostEmotion(Emotion.HAPPY);
         post2.setUser(user);
-        post2.setUserEmotion("happy");
+        post2.setUserEmotion(Emotion.HAPPY);
         postRepository.save(post2);
 
         List<Post> posts = postRepository.findByUserId(user.getId());

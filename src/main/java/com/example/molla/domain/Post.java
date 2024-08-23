@@ -17,14 +17,16 @@ public class Post {
     private String title;
     private String content;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "post_emotion")
-    private String postEmotion;
+    private Emotion postEmotion;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_emotion")
-    private String userEmotion;
+    private Emotion userEmotion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
