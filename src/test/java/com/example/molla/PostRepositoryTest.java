@@ -42,10 +42,7 @@ public class PostRepositoryTest {
     @Test
     @DisplayName("사용자 ID로 작성된 게시글 조회하기")
     public void testFindPostByUserId() {
-        User user = new User();
-        user.setUsername("Park");
-        user.setEmail("park@gmail.com");
-        user.setPassword("1234");
+        User user = new User("Park", "park@gmail.com", "1234");
         userRepository.save(user);
 
         Post post1 = new Post();

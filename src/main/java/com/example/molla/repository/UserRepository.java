@@ -1,18 +1,11 @@
 package com.example.molla.repository;
 
-import com.example.molla.domain.Post;
 import com.example.molla.domain.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class UserRepository {
+import java.util.Optional;
 
-    @PersistenceContext
-    EntityManager em;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    public void save(User user) {
-        em.persist(user);
-    }
+    Optional<User> findByEmail(String email);
 }
