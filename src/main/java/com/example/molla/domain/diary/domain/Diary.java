@@ -1,5 +1,7 @@
-package com.example.molla.domain;
+package com.example.molla.domain.diary.domain;
 
+import com.example.molla.domain.common.Emotion;
+import com.example.molla.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

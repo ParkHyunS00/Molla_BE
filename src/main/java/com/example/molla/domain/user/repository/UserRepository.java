@@ -1,6 +1,6 @@
-package com.example.molla.repository;
+package com.example.molla.domain.user.repository;
 
-import com.example.molla.domain.User;
+import com.example.molla.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

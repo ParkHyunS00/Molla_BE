@@ -1,9 +1,8 @@
-package com.example.molla.repository;
+package com.example.molla.domain.post.repository;
 
-import com.example.molla.domain.Post;
+import com.example.molla.domain.post.domain.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

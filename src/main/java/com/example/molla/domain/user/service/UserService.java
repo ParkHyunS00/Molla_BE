@@ -1,12 +1,12 @@
-package com.example.molla.service;
+package com.example.molla.domain.user.service;
 
-import com.example.molla.domain.User;
-import com.example.molla.dto.UserLoginDTO;
-import com.example.molla.dto.UserResponseDTO;
-import com.example.molla.dto.UserSignUpDTO;
+import com.example.molla.domain.user.domain.User;
+import com.example.molla.domain.user.dto.UserLoginDTO;
+import com.example.molla.domain.user.dto.UserResponseDTO;
+import com.example.molla.domain.user.dto.UserSignUpDTO;
 import com.example.molla.exception.BusinessException;
 import com.example.molla.exception.ErrorCode;
-import com.example.molla.repository.UserRepository;
+import com.example.molla.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

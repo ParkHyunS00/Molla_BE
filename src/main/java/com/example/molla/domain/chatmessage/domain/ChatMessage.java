@@ -1,5 +1,6 @@
-package com.example.molla.domain;
+package com.example.molla.domain.chatmessage.domain;
 
+import com.example.molla.domain.chatroom.domain.ChatRoom;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

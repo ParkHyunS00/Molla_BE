@@ -1,5 +1,6 @@
-package com.example.molla.domain;
+package com.example.molla.domain.diaryimage.domain;
 
+import com.example.molla.domain.diary.domain.Diary;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

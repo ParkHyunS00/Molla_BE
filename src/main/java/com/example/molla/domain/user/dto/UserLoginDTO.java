@@ -1,4 +1,4 @@
-package com.example.molla.dto;
+package com.example.molla.domain.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

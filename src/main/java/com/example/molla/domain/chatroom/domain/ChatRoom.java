@@ -1,4 +1,4 @@
-package com.example.molla.domain;
+package com.example.molla.domain.chatroom.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
