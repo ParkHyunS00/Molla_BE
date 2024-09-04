@@ -4,9 +4,10 @@ import com.example.molla.domain.chatroom.domain.ChatRoom;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Getter
+@Getter @Setter
 public class User {
 
     @Id @GeneratedValue

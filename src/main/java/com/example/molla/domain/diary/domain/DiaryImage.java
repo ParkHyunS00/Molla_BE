@@ -1,7 +1,7 @@
-package com.example.molla.domain.diaryimage.domain;
+package com.example.molla.domain.diary.domain;
 
-import com.example.molla.domain.diary.domain.Diary;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +18,12 @@ public class DiaryImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
+
+    public DiaryImage() {}
+
+    @Builder
+    public DiaryImage(String imagePath, Diary diary) {
+        this.imagePath = imagePath;
+        this.diary = diary;
+    }
 }

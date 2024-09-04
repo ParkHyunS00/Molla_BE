@@ -1,33 +1,26 @@
 package com.example.molla.domain.post.repository;
 
 import com.example.molla.domain.post.domain.Post;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.example.molla.domain.post.dto.PostListResponseDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class PostRepository {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @PersistenceContext
-    EntityManager em;
-
-    public void save(Post post) {
-        em.persist(post);
-    }
-
-    public Post findByPostId(Long id) {
-        return em.find(Post.class, id);
-    }
-
-    public List<Post> findByUserId(Long userId) {
-        return em.createQuery("select p from Post p where p.user.id = :userId", Post.class)
-                .setParameter("userId", userId)
-                .getResultList();
-    }
-
-    public List<Post> findAll() {
-        return em.createQuery("select p from Post p", Post.class).getResultList();
-    }
+    /**
+     * 게시글 목록에 포함되는 내용 -> 게시글 pk(상세 조회용), 제목, 내용, 게시글 감정,
+     * 작성시 최근 7일간 사용자 감정, 그 갯수, 댓글 수, 작성자 이름
+     * 가장 최근 순으로 조회
+     * @return PostListResponseDTO List
+     */
+    @Query("select new com.example.molla.domain.post.dto.PostListResponseDTO(p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, COUNT(c.id), p.user.username, p.createDate)" +
+            " from Post p left join Comment c on p.id = c.post.id" +
+            " group by p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, p.user.id" +
+            " order by p.createDate desc")
+    List<PostListResponseDTO> findPostList();
 }
