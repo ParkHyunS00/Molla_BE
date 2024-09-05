@@ -2,6 +2,7 @@ package com.example.molla.domain.chatmessage.domain;
 
 import com.example.molla.domain.chatroom.domain.ChatRoom;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,4 +27,14 @@ public class ChatMessage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
+
+    public ChatMessage() {}
+
+    @Builder
+    public ChatMessage(LocalDateTime sendDate, Boolean isBot, String message, ChatRoom chatRoom) {
+        this.sendDate = sendDate;
+        this.isBot = isBot;
+        this.message = message;
+        this.chatRoom = chatRoom;
+    }
 }
