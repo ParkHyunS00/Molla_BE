@@ -15,7 +15,10 @@ public enum ErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P01", "해당 ID로 된 게시글을 찾을 수 없습니다."),
 
     // Diary
-    DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "D01", "해당 ID로 된 일기를 찾을 수 없습니다.")
+    DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "D01", "해당 ID로 된 일기를 찾을 수 없습니다."),
+
+    // Common
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C01", "유효하지 않은 입력 값 입니다.")
     ;
 
     private final String message;
