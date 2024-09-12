@@ -1,6 +1,5 @@
 package com.example.molla.domain.post.dto;
 
-import com.example.molla.domain.comment.dto.CommentResponseDTO;
 import com.example.molla.domain.common.Emotion;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +12,7 @@ public class PostDetailResponseDTO {
 
     private String title;
     private String content;
+    private Emotion postEmotion;
     private Emotion userEmotion;
     private Long userEmotionCount;
     private String username;
@@ -20,10 +20,11 @@ public class PostDetailResponseDTO {
     private List<CommentResponseDTO> comments;
 
     @Builder
-    public PostDetailResponseDTO(String title, String content, Emotion userEmotion,Long userEmotionCount,
+    public PostDetailResponseDTO(String title, String content, Emotion postEmotion ,Emotion userEmotion,Long userEmotionCount,
                                  String username, LocalDateTime createDate, List<CommentResponseDTO> comments) {
         this.title = title;
         this.content = content;
+        this.postEmotion = postEmotion;
         this.userEmotion = userEmotion;
         this.userEmotionCount = userEmotionCount;
         this.username = username;

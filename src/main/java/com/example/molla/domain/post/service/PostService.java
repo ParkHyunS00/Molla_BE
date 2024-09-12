@@ -1,8 +1,9 @@
 package com.example.molla.domain.post.service;
 
-import com.example.molla.domain.comment.domain.Comment;
-import com.example.molla.domain.comment.dto.CommentResponseDTO;
-import com.example.molla.domain.comment.repository.CommentRepository;
+import com.example.molla.common.DeleteResponse;
+import com.example.molla.domain.post.domain.Comment;
+import com.example.molla.domain.post.dto.CommentResponseDTO;
+import com.example.molla.domain.post.repository.CommentRepository;
 import com.example.molla.domain.common.Emotion;
 import com.example.molla.domain.diary.repository.DiaryRepository;
 import com.example.molla.domain.post.domain.Post;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,16 +73,18 @@ public class PostService {
 
     // 특정 게시글 삭제
     @Transactional
-    public void deletePost(Long postId) {
+    public DeleteResponse deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
         postRepository.delete(post);
+
+        return new DeleteResponse(post.getId(), "게시글");
     }
 
     // 게시글 상세보기 조회
     public PostDetailResponseDTO getPostDetail(Long postId) {
-        Post post = postRepository.findById(postId)
+        Post post = postRepository.findPostAndUserById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
         List<Comment> comments = commentRepository.findByPostId(postId); // 게시글에 담긴 댓글 조회
@@ -94,6 +96,7 @@ public class PostService {
         return PostDetailResponseDTO.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
+                .postEmotion(post.getPostEmotion())
                 .userEmotion(post.getUserEmotion())
                 .userEmotionCount(post.getUserEmotionCount())
                 .username(post.getUser().getUsername())

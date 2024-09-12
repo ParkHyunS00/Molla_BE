@@ -1,6 +1,5 @@
-package com.example.molla.domain.comment.domain;
+package com.example.molla.domain.post.domain;
 
-import com.example.molla.domain.post.domain.Post;
 import com.example.molla.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -31,10 +30,11 @@ public class Comment {
     private Post post;
 
     @Builder
-    public Comment(String content, User user, Post post) {
+    public Comment(String content, User user, Post post, LocalDateTime createDate) {
         this.content = content;
         this.user = user;
         this.post = post;
+        this.createDate = createDate;
     }
 
     public Comment() {}

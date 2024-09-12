@@ -1,6 +1,6 @@
-package com.example.molla.domain.comment.dto;
+package com.example.molla.domain.post.dto;
 
-import com.example.molla.domain.comment.domain.Comment;
+import com.example.molla.domain.post.domain.Comment;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package com.example.molla;
 
-import com.example.molla.domain.comment.repository.CommentRepository;
+import com.example.molla.domain.post.repository.CommentRepository;
 import com.example.molla.domain.common.Emotion;
 import com.example.molla.domain.diary.repository.DiaryRepository;
 import com.example.molla.domain.post.domain.Post;
@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.molla.domain.diary.domain.Diary;
-import com.example.molla.domain.comment.domain.Comment;
+import com.example.molla.domain.post.domain.Comment;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -96,9 +96,9 @@ public class PostServiceTest {
 
     private void createTestPostAndComments() {
         // 댓글 생성
-        Comment comment1 = new Comment("First comment", user, post1);
-        Comment comment2 = new Comment("Second comment", user, post1);
-        Comment comment3 = new Comment("Third comment", user, post2);
+        Comment comment1 = new Comment("First comment", user, post1, LocalDateTime.now());
+        Comment comment2 = new Comment("Second comment", user, post1, LocalDateTime.now());
+        Comment comment3 = new Comment("Third comment", user, post2, LocalDateTime.now());
 
         commentRepository.save(comment1);
         commentRepository.save(comment2);
