@@ -17,6 +17,11 @@ public enum ErrorCode {
     // Diary
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "D01", "해당 ID로 된 일기를 찾을 수 없습니다."),
 
+    // Image
+    IMAGE_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "I01", "이미지 저장에 실패했습니다."),
+    IMAGE_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "I02", "이미지 파일을 읽는 데 실패했습니다."),
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "I03", "이미지 파일을 찾을 수 없습니다."),
+
     // Common
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C01", "유효하지 않은 입력 값 입니다.")
     ;

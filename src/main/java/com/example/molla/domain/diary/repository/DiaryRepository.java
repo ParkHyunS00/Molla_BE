@@ -1,6 +1,8 @@
 package com.example.molla.domain.diary.repository;
 
 import com.example.molla.domain.diary.domain.Diary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +22,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                                                     @Param("startDate") LocalDateTime startDate,
                                                     @Param("endDate") LocalDateTime endDate);
 
-    List<Diary> findByUserId(Long userId);
+    Page<Diary> findByUserId(Long userId, Pageable pageable);
 }

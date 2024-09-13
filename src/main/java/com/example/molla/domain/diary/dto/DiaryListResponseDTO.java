@@ -16,10 +16,10 @@ public class DiaryListResponseDTO {
     private String content;
     private Emotion diaryEmotion;
     private LocalDateTime createDate;
-    private List<File> images;
+    private List<DiaryImageResponseDTO> images; // Base64 인코딩된 이미지들
 
     @Builder
-    public DiaryListResponseDTO(Long diaryId, String title, String content, Emotion diaryEmotion, LocalDateTime createDate, List<File> images) {
+    public DiaryListResponseDTO(Long diaryId, String title, String content, Emotion diaryEmotion, LocalDateTime createDate, List<DiaryImageResponseDTO> images) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
