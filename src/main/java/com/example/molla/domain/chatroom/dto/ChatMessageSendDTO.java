@@ -1,17 +1,24 @@
-package com.example.molla.domain.chatmessage.dto;
+package com.example.molla.domain.chatroom.dto;
 
-import com.example.molla.domain.chatmessage.domain.ChatMessage;
+import com.example.molla.domain.chatroom.domain.ChatMessage;
 import com.example.molla.domain.chatroom.domain.ChatRoom;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
 public class ChatMessageSendDTO {
 
+    @NotNull
     private Long userId;
+
+    @NotNull
     private String message;
+
+    @Nullable
     private Boolean isBot;
 
     public ChatMessage toEntity(ChatRoom chatRoom) {

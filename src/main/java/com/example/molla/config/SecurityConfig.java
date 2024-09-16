@@ -22,6 +22,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/post/**").permitAll()
                         .requestMatchers("/api/diary/**").permitAll()
                         .requestMatchers("/api/diary/").permitAll()
+                        .requestMatchers("/api/chat/**").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

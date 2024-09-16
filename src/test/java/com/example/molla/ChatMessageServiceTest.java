@@ -1,7 +1,7 @@
 package com.example.molla;
 
-import com.example.molla.domain.chatmessage.dto.ChatMessageSendDTO;
-import com.example.molla.domain.chatmessage.service.ChatMessageService;
+import com.example.molla.domain.chatroom.dto.ChatMessageSendDTO;
+import com.example.molla.domain.chatroom.service.ChatMessageService;
 import com.example.molla.domain.chatroom.domain.ChatRoom;
 import com.example.molla.domain.chatroom.repository.ChatRoomRepository;
 import com.example.molla.domain.chatroom.service.ChatRoomService;

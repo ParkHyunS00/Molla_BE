@@ -32,7 +32,7 @@ public class ChatRoomService {
                 .orElseGet(() -> createNewChatRoom(user));
     }
 
-    private ChatRoom createNewChatRoom(User user ) {
+    private ChatRoom createNewChatRoom(User user) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUser(user);
         chatRoom.setCreateDate(LocalDateTime.now());

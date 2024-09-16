@@ -1,13 +1,15 @@
-package com.example.molla.domain.chatmessage.service;
+package com.example.molla.domain.chatroom.service;
 
-import com.example.molla.domain.chatmessage.domain.ChatMessage;
-import com.example.molla.domain.chatmessage.dto.ChatMessageSendDTO;
-import com.example.molla.domain.chatmessage.repository.ChatMessageRepository;
+import com.example.molla.domain.chatroom.domain.ChatMessage;
+import com.example.molla.domain.chatroom.dto.ChatHistoryResponseDTO;
+import com.example.molla.domain.chatroom.dto.ChatMessageSendDTO;
+import com.example.molla.domain.chatroom.repository.ChatMessageRepository;
 import com.example.molla.domain.chatroom.domain.ChatRoom;
-import com.example.molla.domain.chatroom.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +26,12 @@ public class ChatMessageService {
 
         ChatMessage chatMessage = chatMessageSendDTO.toEntity(chatRoom);
         return chatMessageRepository.save(chatMessage).getId();
+    }
+
+    public List<ChatHistoryResponseDTO> getChatHistory(Long userId) {
+
+        ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(userId);
+
+        return chatMessageRepository.findChatMessageByChatRoomId(chatRoom.getId());
     }
 }
