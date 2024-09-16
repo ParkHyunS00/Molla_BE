@@ -2,6 +2,8 @@ package com.example.molla.domain.post.repository;
 
 import com.example.molla.domain.post.domain.Post;
 import com.example.molla.domain.post.dto.PostListResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             " from Post p left join Comment c on p.id = c.post.id" +
             " group by p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, p.user.id" +
             " order by p.createDate desc")
-    List<PostListResponseDTO> findPostList();
+    Page<PostListResponseDTO> findPostList(Pageable pageable);
 
     /**
      * 게시글 상세 조회 시 사용자 조회 쿼리가 한 번 더 발생하는 것을

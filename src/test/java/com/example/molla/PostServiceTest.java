@@ -169,7 +169,7 @@ public class PostServiceTest {
     @DisplayName("게시글 리스트 조회")
     void testFindAllPostsWithCommentCountAndUserId() {
         // When: 게시글 목록 조회
-        List<PostListResponseDTO> postDTOList = postService.findPostList();
+        Page<PostListResponseDTO> postDTOList = postService.findPostList(0, 10);
 
         // Then: 게시글 목록에 댓글 개수 및 작성자 ID가 제대로 조회되는지 확인
         Assertions.assertThat(postDTOList).isNotEmpty();

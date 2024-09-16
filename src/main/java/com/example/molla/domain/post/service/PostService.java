@@ -1,6 +1,7 @@
 package com.example.molla.domain.post.service;
 
 import com.example.molla.common.DeleteResponse;
+import com.example.molla.common.PageResponse;
 import com.example.molla.domain.post.domain.Comment;
 import com.example.molla.domain.post.dto.CommentResponseDTO;
 import com.example.molla.domain.post.repository.CommentRepository;
@@ -16,6 +17,10 @@ import com.example.molla.domain.user.repository.UserRepository;
 import com.example.molla.exception.BusinessException;
 import com.example.molla.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,8 +72,20 @@ public class PostService {
 
     // TODO : 페이징 기능 추가
     // 모든 게시글 목록 조회
-    public List<PostListResponseDTO> findPostList() {
-        return postRepository.findPostList();
+    public PageResponse<PostListResponseDTO> findPostList(int pageNumber, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<PostListResponseDTO> postPage = postRepository.findPostList(pageable);
+
+        List<PostListResponseDTO> content = postPage.getContent();
+
+        return PageResponse.<PostListResponseDTO>builder()
+                .content(content)
+                .totalPage(postPage.getTotalPages())
+                .totalElement(postPage.getTotalElements())
+                .currentPage(postPage.getNumber())
+                .isLast(postPage.isLast())
+                .build();
     }
 
     // 특정 게시글 삭제

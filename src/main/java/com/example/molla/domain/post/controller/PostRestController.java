@@ -1,6 +1,7 @@
 package com.example.molla.domain.post.controller;
 
 import com.example.molla.common.DeleteResponse;
+import com.example.molla.common.PageResponse;
 import com.example.molla.common.StandardResponse;
 import com.example.molla.domain.post.dto.PostCreateDTO;
 import com.example.molla.domain.post.dto.PostDetailResponseDTO;
@@ -10,7 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,10 +37,13 @@ public class PostRestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<StandardResponse<List<PostListResponseDTO>>> getAllPosts() {
+    public ResponseEntity<StandardResponse<PageResponse<PostListResponseDTO>>> getAllPosts(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
 
-        List<PostListResponseDTO> allPosts = postService.findPostList();
-        return StandardResponse.ofOk(allPosts);
+        PageResponse<PostListResponseDTO> pagePost = postService.findPostList(pageNumber, pageSize);
+        return StandardResponse.ofOk(pagePost);
     }
 
     @DeleteMapping("/delete/{id}")
