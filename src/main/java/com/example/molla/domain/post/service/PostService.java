@@ -2,6 +2,7 @@ package com.example.molla.domain.post.service;
 
 import com.example.molla.common.DeleteResponse;
 import com.example.molla.common.PageResponse;
+import com.example.molla.common.UpdateResponse;
 import com.example.molla.domain.post.domain.Comment;
 import com.example.molla.domain.post.dto.CommentResponseDTO;
 import com.example.molla.domain.post.repository.CommentRepository;
@@ -20,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +44,7 @@ public class PostService {
      * 4. 사용자가 최근 7일간 일기를 작성하지 않은 경우 NOTHING 감정이 저장됨
      * @return post.id
      */
+    // TODO : 감정 분석 비동기 처리 후 따로 저장
     @Transactional
     public Long save(PostCreateDTO postCreateDTO) {
         User user = userRepository.findById(postCreateDTO.getUserId())
@@ -70,7 +71,6 @@ public class PostService {
         return post.getId();
     }
 
-    // TODO : 페이징 기능 추가
     // 모든 게시글 목록 조회
     public PageResponse<PostListResponseDTO> findPostList(int pageNumber, int pageSize) {
 
@@ -88,12 +88,24 @@ public class PostService {
                 .build();
     }
 
+    // 특정 게시글 수정
+    @Transactional
+    public UpdateResponse updatePost(Long postId, PostCreateDTO postCreateDTO) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+
+        post.updatePost(postCreateDTO.getTitle(), postCreateDTO.getContent(), postCreateDTO.getPostEmotion());
+        return new UpdateResponse(post.getId(), "게시글");
+    }
+
     // 특정 게시글 삭제
     @Transactional
     public DeleteResponse deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
+        commentRepository.deleteByPostId(postId);
         postRepository.delete(post);
 
         return new DeleteResponse(post.getId(), "게시글");

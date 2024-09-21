@@ -3,6 +3,7 @@ package com.example.molla.domain.post.dto;
 import com.example.molla.domain.common.Emotion;
 import com.example.molla.domain.post.domain.Post;
 import com.example.molla.domain.user.domain.User;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class PostCreateDTO {
     @NotBlank
     private String content;
 
-    @NotNull
+    @Nullable
     private Emotion postEmotion;
 
     @NotNull

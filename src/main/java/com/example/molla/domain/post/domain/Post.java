@@ -51,4 +51,16 @@ public class Post {
         this.userEmotionCount = userEmotionCount;
         this.user = user;
     }
+
+    public void updatePost(String title, String content, Emotion postEmotion) {
+        if (title != null && !title.isBlank()) {
+            this.title = title;
+        }
+        if (content != null && !content.isBlank()) {
+            this.content = content;
+        }
+        if (postEmotion != null) {
+            this.postEmotion = postEmotion;
+        }
+    }
 }

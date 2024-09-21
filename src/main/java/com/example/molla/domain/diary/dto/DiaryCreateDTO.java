@@ -3,22 +3,24 @@ package com.example.molla.domain.diary.dto;
 import com.example.molla.domain.common.Emotion;
 import com.example.molla.domain.diary.domain.Diary;
 import com.example.molla.domain.user.domain.User;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
 public class DiaryCreateDTO {
 
-    @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
+    @NotBlank
     private String content;
 
-    @NotNull
+    @Nullable
     private Emotion diaryEmotion;
 
     @NotNull

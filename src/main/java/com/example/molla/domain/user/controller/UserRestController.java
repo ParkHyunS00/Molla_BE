@@ -29,7 +29,7 @@ public class UserRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<StandardResponse<Long>> signup(@RequestBody UserSignUpDTO userSignUpDTO) {
+    public ResponseEntity<StandardResponse<Long>> signup(@Valid @RequestBody UserSignUpDTO userSignUpDTO) {
 
         Long userId = userService.signUp(userSignUpDTO);
         return StandardResponse.of(userId, HttpStatus.CREATED);

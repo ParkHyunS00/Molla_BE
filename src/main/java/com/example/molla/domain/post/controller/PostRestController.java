@@ -3,6 +3,7 @@ package com.example.molla.domain.post.controller;
 import com.example.molla.common.DeleteResponse;
 import com.example.molla.common.PageResponse;
 import com.example.molla.common.StandardResponse;
+import com.example.molla.common.UpdateResponse;
 import com.example.molla.domain.post.dto.PostCreateDTO;
 import com.example.molla.domain.post.dto.PostDetailResponseDTO;
 import com.example.molla.domain.post.dto.PostListResponseDTO;
@@ -22,7 +23,7 @@ public class PostRestController {
 
     private final PostService postService;
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<StandardResponse<PostDetailResponseDTO>> getDetail(@PathVariable("id") Long postId) {
 
         PostDetailResponseDTO postDetailResponseDTO = postService.getPostDetail(postId);
@@ -46,10 +47,20 @@ public class PostRestController {
         return StandardResponse.ofOk(pagePost);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse<DeleteResponse>> deletePost(@PathVariable("id") Long postId) {
 
         DeleteResponse deleteResponse = postService.deletePost(postId);
         return StandardResponse.ofOk(deleteResponse);
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<StandardResponse<UpdateResponse>> updatePost(
+            @PathVariable("id") Long postId,
+            @RequestBody PostCreateDTO postCreateDTO) {
+
+        UpdateResponse updateResponse = postService.updatePost(postId, postCreateDTO);
+        return StandardResponse.ofOk(updateResponse);
+    }
+
 }

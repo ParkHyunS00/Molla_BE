@@ -13,7 +13,7 @@ public class UserSignUpDTO {
     @NotBlank
     private String username;
 
-    @Email(message = "잘못된 이메일 형식입니다.")
+    @Email(message = "잘못된 이메일 형식입니다.") @NotBlank
     private String email;
 
     @NotBlank

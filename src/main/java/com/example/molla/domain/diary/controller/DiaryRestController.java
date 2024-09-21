@@ -62,7 +62,7 @@ public class DiaryRestController {
         return StandardResponse.ofOk(updateResponse);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse<DeleteResponse>> deleteDiary(@PathVariable("id") Long diaryId) {
 
         DeleteResponse deleteResponse = diaryService.deleteDiary(diaryId);
