@@ -1,8 +1,10 @@
 package com.example.molla.exception;
 
 import lombok.Getter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,5 +37,11 @@ public class ErrorResponse {
                         fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse("")));
 
         return new ErrorResponse(errorCode, errorCode.getMessage(), fieldErrors);
+    }
+
+    // HttpMessageNotReadableException 예외 전용 메서드
+    public static ErrorResponse of(HttpMessageNotReadableException e, ErrorCode errorCode) {
+
+        return new ErrorResponse(errorCode, errorCode.getMessage(), null);
     }
 }

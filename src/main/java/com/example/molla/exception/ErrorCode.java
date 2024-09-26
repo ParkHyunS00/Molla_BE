@@ -23,7 +23,8 @@ public enum ErrorCode {
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "I03", "이미지 파일을 찾을 수 없습니다."),
 
     // Common
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C01", "유효하지 않은 입력 값 입니다.")
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C01", "유효하지 않은 입력 값 입니다."),
+    INVALID_INPUT_TYPE(HttpStatus.BAD_REQUEST, "C02", "잘못된 데이터 형식이 입력되었습니다.")
     ;
 
     private final String message;
