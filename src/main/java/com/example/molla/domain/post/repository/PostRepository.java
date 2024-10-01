@@ -21,10 +21,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * 가장 최근 순으로 조회
      * @return PostListResponseDTO List
      */
-    @Query("select new com.example.molla.domain.post.dto.PostListResponseDTO(p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, COUNT(c.id), p.user.username, p.createDate)" +
+    @Query(value = "select new com.example.molla.domain.post.dto.PostListResponseDTO(p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, COUNT(c.id), p.user.username, p.createDate)" +
             " from Post p left join Comment c on p.id = c.post.id" +
             " group by p.id, p.title, p.content, p.userEmotion, p.userEmotionCount, p.user.id" +
-            " order by p.createDate desc")
+            " order by p.createDate desc",
+            countQuery = "select count(p.id) from Post p")
     Page<PostListResponseDTO> findPostList(Pageable pageable);
 
     /**

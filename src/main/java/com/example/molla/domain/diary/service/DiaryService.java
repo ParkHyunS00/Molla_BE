@@ -28,9 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,11 +70,23 @@ public class DiaryService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
+        // 페이징 처리
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
         Page<Diary> diaryPage = diaryRepository.findByUserId(user.getId(), pageable);
 
+        // 다이어리 id 값 분류
+        List<Long> diaryIds = diaryPage.getContent().stream().map(Diary::getId).toList();
+
+        // 다이어리 id로 이미지 조회
+        List<DiaryImage> diaryImages = diaryImageRepository.findByDiaryIds(diaryIds);
+
+        // 다이어리 id 로 된 이미지들 그룹화
+        Map<Long, List<DiaryImage>> diaryImageMap = diaryImages.stream()
+                .collect(Collectors.groupingBy(diaryImage -> diaryImage.getDiary().getId()));
+
+        // 다이어리, 다이어리 이미지로 응답 DTO 형식에 맞춘 객체 만들기
         List<DiaryListResponseDTO> content = diaryPage.getContent().stream()
-                .map(this::convertToDiaryListResponseDTO)
+                .map(diary -> convertToDiaryListResponseDTO(diary, diaryImageMap.getOrDefault(diary.getId(), Collections.emptyList())))
                 .toList();
 
         return PageResponse.<DiaryListResponseDTO>builder()
@@ -126,9 +136,27 @@ public class DiaryService {
         return new DeleteResponse(diary.getId(), "일기");
     }
 
-    private DiaryListResponseDTO convertToDiaryListResponseDTO(Diary diary) {
-
-        List<DiaryImageResponseDTO> base64Images = getImageBase64Strings(diary.getId());
+    // 이미지가 존재하지 않거나 여러 개일 때도 대응
+    private DiaryListResponseDTO convertToDiaryListResponseDTO(Diary diary, List<DiaryImage> images) {
+        List<DiaryImageResponseDTO> base64Images = images.stream()
+                .map(image -> {
+                    File file = new File(imageUploadDir + File.separator + image.getImagePath());
+                    if (file.exists()) {
+                        try {
+                            byte[] fileContent = Files.readAllBytes(file.toPath());
+                            String base64EncodedImage = Base64.getEncoder().encodeToString(fileContent);
+                            return DiaryImageResponseDTO.builder()
+                                    .imageId(image.getId())
+                                    .base64EncodedImage(base64EncodedImage)
+                                    .build();
+                        } catch (IOException e) {
+                            throw new BusinessException(ErrorCode.IMAGE_READ_FAILED);
+                        }
+                    } else {
+                        throw new BusinessException(ErrorCode.IMAGE_NOT_FOUND);
+                    }
+                })
+                .collect(Collectors.toList());
 
         return DiaryListResponseDTO.builder()
                 .diaryId(diary.getId())
@@ -138,36 +166,6 @@ public class DiaryService {
                 .createDate(diary.getCreateDate())
                 .images(base64Images)
                 .build();
-    }
-
-    private List<DiaryImageResponseDTO> getImageBase64Strings(Long diaryId) {
-
-        List<DiaryImage> diaryImages = diaryImageRepository.findByDiaryId(diaryId);
-
-        // DiaryImage 목록을 DiaryImageResponseDTO로 변환
-        return diaryImages.stream()
-                .map(image -> {
-                    File file = new File(imageUploadDir + File.separator + image.getImagePath());
-                    if (file.exists()) {
-                        try {
-                            // 이미지 파일을 Base64로 변환
-                            byte[] fileContent = Files.readAllBytes(file.toPath());
-                            String base64EncodedImage = Base64.getEncoder().encodeToString(fileContent);
-
-                            // DiaryImageResponseDTO로 변환하여 반환
-                            return DiaryImageResponseDTO.builder()
-                                    .imageId(image.getId())  // 이미지 ID 설정
-                                    .base64EncodedImage(base64EncodedImage)  // Base64로 인코딩된 이미지 설정
-                                    .build();
-
-                        } catch (IOException e) {
-                            throw new BusinessException(ErrorCode.IMAGE_READ_FAILED);
-                        }
-                    } else {
-                        throw new BusinessException(ErrorCode.IMAGE_NOT_FOUND);
-                    }
-                })
-                .collect(Collectors.toList());
     }
 
     private void saveImage(MultipartFile file, Diary diary) throws IOException {
