@@ -18,13 +18,6 @@ public class ChatRestController {
 
     private final ChatMessageService chatMessageService;
 
-    @PostMapping("/send")
-    public ResponseEntity<StandardResponse<Long>> sendMessage(@Valid @RequestBody ChatMessageSendDTO chatMessageSendDTO) {
-
-        Long messageId = chatMessageService.saveMessage(chatMessageSendDTO);
-        return StandardResponse.ofOk(messageId);
-    }
-
     @GetMapping("/history/{id}")
     public ResponseEntity<StandardResponse<List<ChatHistoryResponseDTO>>> getChatHistory(@PathVariable("id") Long userId) {
 

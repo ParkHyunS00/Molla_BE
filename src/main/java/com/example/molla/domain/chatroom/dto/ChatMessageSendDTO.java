@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class ChatMessageSendDTO {
 
-    @NotNull
+    @Nullable
     private Long userId;
 
     @NotNull

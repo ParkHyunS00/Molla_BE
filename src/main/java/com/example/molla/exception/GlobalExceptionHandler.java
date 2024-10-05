@@ -1,6 +1,7 @@
 package com.example.molla.exception;
 
 import com.example.molla.common.StandardResponse;
+import com.example.molla.domain.chatroom.exception.WebSocketException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -47,6 +48,17 @@ public class GlobalExceptionHandler {
         log.error("MethodArgumentTypeMismatchException : ", e);
 
         final ErrorResponse errorResponse = ErrorResponse.of(e, ErrorCode.INVALID_INPUT_TYPE);
+        return StandardResponse.of(errorResponse);
+    }
+
+    /**
+     * WebSocket 관련 에러 처리
+     */
+    @ExceptionHandler(WebSocketException.class)
+    public ResponseEntity<StandardResponse<ErrorResponse>> handleWebSocketException(final WebSocketException e) {
+        log.error("WebSocketException : ", e);
+
+        final ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode());
         return StandardResponse.of(errorResponse);
     }
 }
