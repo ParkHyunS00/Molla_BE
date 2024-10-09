@@ -63,4 +63,10 @@ public class Post {
             this.postEmotion = postEmotion;
         }
     }
+
+    public void updatePost(Emotion postEmotion) {
+        if (postEmotion != null) {
+            this.postEmotion = postEmotion;
+        }
+    }
 }

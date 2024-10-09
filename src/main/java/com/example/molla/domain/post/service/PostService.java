@@ -99,6 +99,15 @@ public class PostService {
         return new UpdateResponse(post.getId(), "게시글");
     }
 
+    @Transactional
+    public void updatePostEmotion(Long postId, Emotion postEmotion) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+
+        post.setPostEmotion(postEmotion);
+    }
+
     // 특정 게시글 삭제
     @Transactional
     public DeleteResponse deletePost(Long postId) {

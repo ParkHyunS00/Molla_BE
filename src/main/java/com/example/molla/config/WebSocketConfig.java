@@ -2,6 +2,7 @@ package com.example.molla.config;
 
 
 import com.example.molla.domain.chatroom.handler.ChatWebSocketHandler;
+import com.example.molla.domain.common.EmotionAnalysisHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +17,17 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final ChatWebSocketHandler chatWebSocketHandler;
+    private final EmotionAnalysisHandler emotionAnalysisHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+
+        // 상담 메시지 관련 웹소켓
         registry.addHandler(chatWebSocketHandler, "ws/chat")
+                .setAllowedOrigins("*");
+
+        // 감정 분석 관련 웹소켓
+        registry.addHandler((WebSocketHandler) emotionAnalysisHandler, "/ws/emotion-analysis")
                 .setAllowedOrigins("*");
     }
 }

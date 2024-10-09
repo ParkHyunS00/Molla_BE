@@ -3,6 +3,7 @@ package com.example.molla.domain.diary.service;
 import com.example.molla.common.DeleteResponse;
 import com.example.molla.common.PageResponse;
 import com.example.molla.common.UpdateResponse;
+import com.example.molla.domain.common.Emotion;
 import com.example.molla.domain.diary.domain.Diary;
 import com.example.molla.domain.diary.dto.DiaryCreateDTO;
 import com.example.molla.domain.diary.dto.DiaryImageResponseDTO;
@@ -122,6 +123,15 @@ public class DiaryService {
         }
 
         return new UpdateResponse(diary.getId(), "일기");
+    }
+
+    @Transactional
+    public void updateDiaryEmotion(Long diaryId, Emotion emotion) {
+
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.DIARY_NOT_FOUND));
+
+        diary.setDiaryEmotion(emotion);
     }
 
     @Transactional

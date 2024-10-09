@@ -39,7 +39,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         if (clientType.equals("ml")) {
             mlSession = session;
-            log.info("[{}] : ML connected", session.getId());
+            log.info("[{}] : ML connected for counsel", session.getId());
 
         } else if (clientType.equals("user")) {
             String userId = getQueryParameter(session, "id");
@@ -50,7 +50,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
             userSessions.put(Long.valueOf(userId), session);
             userMessageLock.put(Long.valueOf(userId), new AtomicBoolean(true));
-            log.info("[{}] : User connected", session.getId());
+            log.info("[{}] : User connected for counsel", session.getId());
         }
     }
 

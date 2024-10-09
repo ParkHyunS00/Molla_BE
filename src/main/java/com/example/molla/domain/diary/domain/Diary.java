@@ -54,4 +54,10 @@ public class Diary {
             this.diaryEmotion = diaryEmotion;
         }
     }
+
+    public void updateDiary(Emotion emotion) {
+        if (emotion != null) {
+            this.diaryEmotion = emotion;
+        }
+    }
 }
