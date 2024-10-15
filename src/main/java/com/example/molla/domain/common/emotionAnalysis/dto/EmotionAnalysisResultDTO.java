@@ -1,5 +1,6 @@
-package com.example.molla.domain.common;
+package com.example.molla.domain.common.emotionAnalysis.dto;
 
+import com.example.molla.domain.common.Emotion;
 import lombok.Getter;
 
 @Getter

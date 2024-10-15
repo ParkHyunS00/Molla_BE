@@ -1,5 +1,7 @@
 package com.example.molla.domain.chatroom.dto;
 
+import com.example.molla.domain.common.Status;
+
 import lombok.Builder;
 import lombok.Getter;
 

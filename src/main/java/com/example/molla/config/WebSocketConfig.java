@@ -2,11 +2,9 @@ package com.example.molla.config;
 
 
 import com.example.molla.domain.chatroom.handler.ChatWebSocketHandler;
-import com.example.molla.domain.common.EmotionAnalysisHandler;
+import com.example.molla.domain.common.emotionAnalysis.EmotionAnalysisHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -27,7 +25,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
 
         // 감정 분석 관련 웹소켓
-        registry.addHandler((WebSocketHandler) emotionAnalysisHandler, "/ws/emotion-analysis")
+        registry.addHandler(emotionAnalysisHandler, "/ws/emotion-analysis")
                 .setAllowedOrigins("*");
     }
 }

@@ -2,7 +2,7 @@ package com.example.molla.domain.chatroom.handler;
 
 import com.example.molla.domain.chatroom.dto.ChatMessageSendDTO;
 import com.example.molla.domain.chatroom.dto.ResponseMessageDTO;
-import com.example.molla.domain.chatroom.dto.Status;
+import com.example.molla.domain.common.Status;
 import com.example.molla.domain.chatroom.exception.WebSocketException;
 import com.example.molla.domain.chatroom.service.ChatMessageService;
 import com.example.molla.exception.ErrorCode;
@@ -128,7 +128,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             try {
                 ResponseMessageDTO errorMessage = ResponseMessageDTO.builder()
                         .status(Status.ERROR)
-                        .content("ML Error")
+                        .content(ErrorCode.WEBSOCKET_INVALID_SESSION.getMessage())
                         .description(description)
                         .build();
 
@@ -145,12 +145,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         AtomicBoolean canSend = userMessageLock.get(userId);
 
         if (canSend != null && !canSend.get()) {
-            sendErrorMessage(session, ErrorCode.WEBSOCKET_INVALID_SEND, "상담사의 응답이 오기 전까지 메시지를 전송할 수 없습니다.", userId);
+            sendErrorMessageToUser(session, ErrorCode.WEBSOCKET_INVALID_SEND, "상담사의 응답이 오기 전까지 메시지를 전송할 수 없습니다.", userId);
             return;
         }
 
         if (mlSession == null || !mlSession.isOpen()) {
-            sendErrorMessage(session, ErrorCode.WEBSOCKET_INVALID_SESSION, "상담사가 연결되어있지 않습니다.", userId);
+            sendErrorMessageToUser(session, ErrorCode.WEBSOCKET_INVALID_SESSION, "상담사가 연결되어있지 않습니다.", userId);
             return;
         }
 
@@ -172,7 +172,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private void sendErrorMessage(WebSocketSession session, ErrorCode errorCode, String description, Long userId) {
+    private void sendErrorMessageToUser(WebSocketSession session, ErrorCode errorCode, String description, Long userId) {
         try {
             ResponseMessageDTO errorMessage = ResponseMessageDTO.builder()
                     .userId(userId)

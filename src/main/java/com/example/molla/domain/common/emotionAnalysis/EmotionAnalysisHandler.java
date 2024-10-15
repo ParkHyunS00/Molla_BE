@@ -1,6 +1,10 @@
-package com.example.molla.domain.common;
+package com.example.molla.domain.common.emotionAnalysis;
 
 import com.example.molla.domain.chatroom.exception.WebSocketException;
+import com.example.molla.domain.common.Status;
+import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisRequestDTO;
+import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisResponseDTO;
+import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisResultDTO;
 import com.example.molla.domain.diary.service.DiaryService;
 import com.example.molla.domain.post.service.PostService;
 import com.example.molla.exception.ErrorCode;
@@ -108,7 +112,7 @@ public class EmotionAnalysisHandler extends TextWebSocketHandler {
         WebSocketSession userSession = userSessions.get(userId);
 
         if (userSession == null || !userSession.isOpen()) {
-            sendErrorMessageToMl("사용자의 세션이 연결되어 있지 않습니다. userId : " + userId);
+            sendErrorMessageToMl("사용자의 세션이 연결되어 있지 않습니다.", userId);
             return;
         }
 
@@ -131,10 +135,11 @@ public class EmotionAnalysisHandler extends TextWebSocketHandler {
         }
     }
 
-    private void sendErrorMessageToMl(String message) {
+    private void sendErrorMessageToMl(String message, Long id) {
         if (mlSession != null && mlSession.isOpen()) {
             try {
                 EmotionAnalysisResponseDTO response = EmotionAnalysisResponseDTO.builder()
+                        .userId(id)
                         .status(Status.ERROR)
                         .description(message)
                         .build();

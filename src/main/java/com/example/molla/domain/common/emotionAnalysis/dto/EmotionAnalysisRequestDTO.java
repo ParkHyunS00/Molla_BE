@@ -1,4 +1,4 @@
-package com.example.molla.domain.common;
+package com.example.molla.domain.common.emotionAnalysis.dto;
 
 import lombok.Getter;
 

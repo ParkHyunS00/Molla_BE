@@ -131,7 +131,7 @@ public class DiaryService {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.DIARY_NOT_FOUND));
 
-        diary.setDiaryEmotion(emotion);
+        diary.updateDiary(emotion);
     }
 
     @Transactional
