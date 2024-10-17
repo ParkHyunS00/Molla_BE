@@ -1,12 +1,15 @@
 package com.example.molla.domain.chatroom.handler;
 
+import com.example.molla.domain.chatroom.dto.ChatHistoryResponseDTO;
 import com.example.molla.domain.chatroom.dto.ChatMessageSendDTO;
 import com.example.molla.domain.chatroom.dto.ResponseMessageDTO;
+import com.example.molla.domain.chatroom.dto.ResponseToMlMessageDTO;
 import com.example.molla.domain.common.Status;
 import com.example.molla.domain.chatroom.exception.WebSocketException;
 import com.example.molla.domain.chatroom.service.ChatMessageService;
 import com.example.molla.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -155,17 +158,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
 
         try {
-            ResponseMessageDTO responseMessage = ResponseMessageDTO.builder()
-                    .userId(userId)
-                    .status(Status.CHAT)
-                    .content(chatMessageSendDTO.getMessage())
-                    .build();
-
             Long messageId = chatMessageService.saveMessage(chatMessageSendDTO);
             log.info("[{}] : Message saved to {}", session.getId(), messageId);
 
-            canSend.set(false);
+            List<ChatHistoryResponseDTO> history = chatMessageService.getChatHistory(userId);
+            ResponseToMlMessageDTO responseMessage = ResponseToMlMessageDTO.builder()
+                    .userId(userId)
+                    .status(Status.CHAT)
+                    .content(history)
+                    .build();
 
+            canSend.set(false);
             mlSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(responseMessage)));
         } catch (Exception e) {
             throw new WebSocketException(ErrorCode.WEBSOCKET_MESSAGE_SEND_ERROR, e);
