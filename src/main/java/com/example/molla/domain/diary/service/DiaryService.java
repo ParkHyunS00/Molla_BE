@@ -150,6 +150,9 @@ public class DiaryService {
 
         deleteDiaryImagesByDiaryId(diary.getId());
 
+        LocalDate writtenDate = diary.getCreateDate().toLocalDate();
+        emotionDailyCountService.updateEmotionCount(writtenDate, diary.getDiaryEmotion(), null);
+
         diaryRepository.delete(diary);
         return new DeleteResponse(diary.getId(), "일기");
     }
