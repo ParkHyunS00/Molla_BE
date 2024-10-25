@@ -8,4 +8,5 @@ public class EmotionAnalysisRequestDTO {
     private Long targetId;
     private String content;
     private String domain;
+    private String timestamp;
 }

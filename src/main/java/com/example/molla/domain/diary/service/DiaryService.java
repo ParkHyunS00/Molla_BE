@@ -11,10 +11,12 @@ import com.example.molla.domain.diary.dto.DiaryListResponseDTO;
 import com.example.molla.domain.diary.repository.DiaryRepository;
 import com.example.molla.domain.diary.domain.DiaryImage;
 import com.example.molla.domain.diary.repository.DiaryImageRepository;
+import com.example.molla.domain.emotion.service.EmotionDailyCountService;
 import com.example.molla.domain.user.domain.User;
 import com.example.molla.domain.user.repository.UserRepository;
 import com.example.molla.exception.BusinessException;
 import com.example.molla.exception.ErrorCode;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -40,6 +42,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
     private final DiaryImageRepository diaryImageRepository;
+    private final EmotionDailyCountService emotionDailyCountService;
 
     @Value("${image.upload.dir}")
     private String imageUploadDir;
@@ -126,12 +129,17 @@ public class DiaryService {
     }
 
     @Transactional
-    public void updateDiaryEmotion(Long diaryId, Emotion emotion) {
+    public void updateDiaryEmotion(Long diaryId, Emotion newEmotion, String timestamp, String content) {
 
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.DIARY_NOT_FOUND));
 
-        diary.updateDiary(emotion);
+        Emotion oldEmotion = diary.getDiaryEmotion();
+
+        diary.updateDiary(newEmotion, content);
+        LocalDate date = LocalDate.parse(timestamp);
+
+        emotionDailyCountService.updateEmotionCount(date, oldEmotion, newEmotion);
     }
 
     @Transactional

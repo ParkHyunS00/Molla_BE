@@ -8,5 +8,7 @@ public class EmotionAnalysisResultDTO {
     private Long userId;
     private Long targetId;
     private Emotion emotion;
+    private String content;
     private String domain;
+    private String timestamp;
 }

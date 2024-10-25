@@ -55,9 +55,12 @@ public class Diary {
         }
     }
 
-    public void updateDiary(Emotion emotion) {
+    public void updateDiary(Emotion emotion, String content) {
         if (emotion != null) {
             this.diaryEmotion = emotion;
+        }
+        if (content != null && !content.isBlank()) {
+            this.content = content;
         }
     }
 }

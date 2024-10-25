@@ -6,9 +6,12 @@ import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisReques
 import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisResponseDTO;
 import com.example.molla.domain.common.emotionAnalysis.dto.EmotionAnalysisResultDTO;
 import com.example.molla.domain.diary.service.DiaryService;
+import com.example.molla.domain.emotion.dto.EmotionSumDTO;
+import com.example.molla.domain.emotion.service.EmotionDailyCountService;
 import com.example.molla.domain.post.service.PostService;
 import com.example.molla.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EmotionAnalysisHandler extends TextWebSocketHandler {
 
     private final Map<Long, WebSocketSession> userSessions = new ConcurrentHashMap<>();
+    private final EmotionDailyCountService emotionDailyCountService;
     private WebSocketSession mlSession = null;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final PostService postService;
@@ -117,17 +121,25 @@ public class EmotionAnalysisHandler extends TextWebSocketHandler {
         }
 
         try {
+            if (emotionAnalysisResultDTO.getDomain().equals("DIARY")) {
+                diaryService.updateDiaryEmotion(
+                        emotionAnalysisResultDTO.getTargetId(),
+                        emotionAnalysisResultDTO.getEmotion(),
+                        emotionAnalysisResultDTO.getTimestamp(),
+                        emotionAnalysisResultDTO.getContent()
+                );
+            } else if (emotionAnalysisResultDTO.getDomain().equals("POST")) {
+                postService.updatePostEmotion(emotionAnalysisResultDTO.getTargetId(), emotionAnalysisResultDTO.getEmotion());
+            }
+
+            EmotionSumDTO emotionSumForLast7Days = emotionDailyCountService.getEmotionSumForLast7Days(emotionAnalysisResultDTO.getTimestamp());
+
             EmotionAnalysisResponseDTO response = EmotionAnalysisResponseDTO.builder()
                     .userId(userId)
                     .status(Status.DONE)
                     .result(emotionAnalysisResultDTO.getEmotion())
+                    .emotionSum(emotionSumForLast7Days)
                     .build();
-
-            if (emotionAnalysisResultDTO.getDomain().equals("DIARY")) {
-                diaryService.updateDiaryEmotion(emotionAnalysisResultDTO.getTargetId(), emotionAnalysisResultDTO.getEmotion());
-            } else if (emotionAnalysisResultDTO.getDomain().equals("POST")) {
-                postService.updatePostEmotion(emotionAnalysisResultDTO.getTargetId(), emotionAnalysisResultDTO.getEmotion());
-            }
 
             userSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
         } catch (Exception e) {
