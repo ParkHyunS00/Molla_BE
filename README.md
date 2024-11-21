@@ -4,8 +4,8 @@
 </div>
 
 <div align="center">
-Molla(Monitoring Of Life Logs and Affect)는 자연어 처리와 감정 모니터링을 활용한 AI 기반 상담 시스템의 애플리케이션 입니다.<br>
-이 프로젝트는 한국의 높은 자살률과 우울증 문제에 대응하기 위해 개발되었으며, 심리상담에 대한 접근성을 높이는 것을 목표로 합니다.
+Molla(Monitoring Of Life Logs and Affect)는 자연어 처리와 감정 모니터링을 활용한 AI 기반 상담 애플리케이션 입니다.<br>
+이 프로젝트는 한국의 높은 우울증 문제에 대응하기 위해 개발되었으며, 심리상담에 대한 접근성을 높이는 것을 목표로 합니다.
 </div>
 
 <br />
